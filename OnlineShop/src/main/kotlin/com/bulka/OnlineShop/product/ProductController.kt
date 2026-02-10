@@ -31,9 +31,9 @@ class ProductController(private val productService: ProductService) {
     fun updateProduct(@PathVariable id: Long, @RequestBody product: Product): ResponseEntity<Product> {
         val updatedProduct = productService.updateProduct(id, product)
         return if (updatedProduct != null) {
-            ResponseEntity.ok(updatedProduct)  // 200 OK
+            ResponseEntity.ok(updatedProduct)
         } else {
-            ResponseEntity.notFound().build()  // 404 Not Found
+            ResponseEntity.notFound().build()
         }
     }
 

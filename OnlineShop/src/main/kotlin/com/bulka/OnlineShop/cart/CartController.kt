@@ -17,22 +17,6 @@ class CartController(private val cartService: CartService) {
         }
     }
 
-    @PostMapping("/user/{userId}")
-    fun createCartForUser(@PathVariable userId: Long): ResponseEntity<Cart> {
-        return try {
-            val cart = cartService.createCartForUser(userId)
-            ResponseEntity.status(201).body(cart)
-        } catch (e: RuntimeException) {
-            if (e.message?.contains("not found") == true) {
-                ResponseEntity.notFound().build()
-            } else if (e.message?.contains("already exists") == true) {
-                ResponseEntity.status(409).build()
-            } else {
-                throw e
-            }
-        }
-    }
-
     @PostMapping("/user/{userId}/items")
     fun addToCart(
         @PathVariable userId: Long,

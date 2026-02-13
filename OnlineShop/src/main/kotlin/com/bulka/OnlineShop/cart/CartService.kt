@@ -18,20 +18,6 @@ class CartService(
     }
 
     @Transactional
-    fun createCartForUser(userId: Long): Cart {
-        val user = userRepository.findById(userId).orElse(null)
-            ?: throw RuntimeException("User with id $userId not found")
-
-        if (cartRepository.existsByUserId(userId)) {
-            throw RuntimeException("Cart for user $userId already exists")
-        }
-
-        val cart = Cart(user = user)
-
-        return cartRepository.save(cart)
-    }
-
-    @Transactional
     fun getOrCreateCart(userId: Long): Cart {
         val existingCart = cartRepository.findByUserId(userId)
 
@@ -39,7 +25,11 @@ class CartService(
             return existingCart
         }
 
-        return createCartForUser(userId)
+       val user = userRepository.findById(userId).orElse(null)
+            ?: throw RuntimeException("User with id $userId not found")
+
+        val cart = Cart(user = user)
+        return cartRepository.save(cart)
     }
 
     @Transactional
